@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./store.js";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  state = { counter: 0 };
+
+  componentDidMount() {
+    window.store.subscribe(() => {
+      console.log("event...");
+      this.setState({
+        counter: window.store.getState()
+      });
+    });
+  }
+
+  render() {
+    return (
+      <main>
+        <h1>Meu Redux Counter: {this.state.counter}</h1>
+        <button onClick={() => window.store.dispatch({ type: "INC" })}>
+          Incrementar
+        </button>
+        <button onClick={() => window.store.dispatch({ type: "DEC" })}>
+          Decrementar
+        </button>
+      </main>
+    );
+  }
 }
 
 export default App;
